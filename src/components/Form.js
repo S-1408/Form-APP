@@ -1,70 +1,72 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-class Form extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      comments: "",
-      language: "Angular",
-    };
-  }
+let formElement = [{ key: "name" }, { key: "phone" }, { key: "gender" }];
+const Form = ({ addNewRecord }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    gender: "",
+  });
+  const { name, phone, gender } = formData;
+  //   const [register, handleSUbmit] = useForm();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  handleChange = (event) => {
-    this.setState({
-      username: event.target.value,
+    console.log(formData);
+    addNewRecord(formData);
+    // alert("success");
+    setFormData({ id: uuidv4(), name: "", phone: "", gender: "" });
+  };
+  const handleChange = (value, key) => {
+    setFormData({
+      ...formData,
+      ...{ [key]: value },
     });
   };
 
-  handleComments = (event) => {
-    this.setState({
-      comments: event.target.value,
-    });
-  };
-  handleLanguage = (event) => {
-    this.setState({ language: event.target.value });
-  };
-  handleSubmit = (event) => {
-    alert(
-      `${this.state.username} ${this.state.comments} ${this.state.language}`
-    );
-    // to prevent the auto refresh page
-    event.preventDefault();
-  };
-  render() {
-    const { username, comments, language } = this.state;
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <div>
-          <label>UserName</label>
-          <input
-            type='text'
-            // value={this.state.username}
-            value={username}
-            onChange={this.handleChange}
-          />
-        </div>
-        <div>
-          <label>Comments</label>
-          <textarea
-            type='text'
-            // value={this.state.comments}
-            value={comments}
-            onChange={this.handleComments}></textarea>
-        </div>
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <h5 style={{ marginRight: "225px" }}>Hello there!!</h5>
+        <br />
+        {formElement.map((element, key) => {
+          return (
+            <div className='form-group' key={key}>
+              <input
+                value={formData[element.key]}
+                onChange={(e) => {
+                  handleChange(e.target.value, element.key);
+                }}
+                placeholder={`Enter your ${element.key}`}
+                type='text'
+                required
+                size='40'
+              />
+            </div>
+          );
+        })}
 
-        <div>
-          <label>Language</label>
-          <select value={language} onChange={this.handleLanguage}>
-            <option value='Angular'>Angular</option>
-            <option value='React'>React</option>
-            <option value='Vue'>Vue</option>
-          </select>
+        <div className='form-group'>
+          <div className='row'>
+            <div
+              className='col-md-8'
+              style={{ textAlign: "center", marginLeft: "93px" }}>
+              <button
+                type='submit'
+                class='btn btn-default btn-block  '
+                style={{
+                  backgroundColor: "#90DAF6",
+                  color: "white",
+                  fontWeight: "bold",
+                }}>
+                ADD USER
+              </button>
+            </div>
+          </div>
         </div>
-
-        <button type='submit'>Submit</button>
       </form>
-    );
-  }
-}
+    </div>
+  );
+};
 export default Form;

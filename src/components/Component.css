@@ -1,0 +1,9 @@
+.Component-container{
+    margin-top:150px;
+    background-color: #282c34;
+    min-height: 800vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
